@@ -54,14 +54,14 @@ func _ready():
 	stereo_materials = []
 	for res in ["res://material/stereo_shader.tres", "res://material/stereo_shader360.tres", "res://material/stereo_shader360eac.tres"]:
 		var m = load(res)
-		m.set_shader_parameter("stereo_img", $VideoViewport.get_texture())
+		m.set_shader_parameter("stereo_img", player.get_video_texture())
 		m.set_shader_parameter("cross_eyes", 0)
 		stereo_materials.push_back(m)
 	stereo_materials.push_front(stereo_materials[0])
 		
 	mono_material = StandardMaterial3D.new()
-	mono_material.albedo_texture = $VideoViewport.get_texture()
-	mono_material.flags_unshaded = true
+	mono_material.albedo_texture = player.get_video_texture()
+	mono_material.shading_mode = 0
 	
 	
 	# initialize surfaces
@@ -151,7 +151,7 @@ func load_media_file(path):
 		player.stop()
 
 	elif _load_video(path):
-		texture = $VideoViewport.get_texture()
+		texture = player.get_video_texture()
 		_view_mode = VIEW_MODE.VIDEO
 	else:
 		print("ERROR: Couldn't _recognize file: %s" % path)
